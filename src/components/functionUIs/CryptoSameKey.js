@@ -132,14 +132,19 @@ export default function CryptoSameKey(props) {
             : railFenceFile.substring(0, railFenceFile.length - 1),
           combCipher ? combCipher : combFile.substring(0, combFile.length - 1)
         );
-        setOutput(
-          "plainText: " + result.plainText + "\n" + "Key: " + result.key
-        );
-        try {
-          const dataURI = "data:text/plain;base64," + encodeBase64(result);
-          saveAs(dataURI, "undefined.txt");
-        } catch (error) {
-          console.log(error);
+        const resultText =
+          "plainText: " + result.plainText + "\n" + "Key: " + result.key;
+
+        if (caesarFile || railFenceFile || combFile) {
+          try {
+            const dataURI =
+              "data:text/plain;base64," + encodeBase64(resultText);
+            saveAs(dataURI, "undefined.txt");
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          setOutput(resultText);
         }
       } catch (e) {
         alert("Don't exist output!");
@@ -160,7 +165,10 @@ export default function CryptoSameKey(props) {
           <Input
             style={{ width: "100%" }}
             placeholder="Caesar Cipher"
-            onChange={(e) => setCaesarCipher(e.target.value)}
+            onChange={(e) => {
+              setCaesarCipher(e.target.value);
+              setCaesarFile("");
+            }}
             value={caesarCipher}
           />
           <Input type="file" onChange={onFileChange1} />
@@ -172,7 +180,10 @@ export default function CryptoSameKey(props) {
           <Input
             style={{ width: "100%" }}
             placeholder="Rail Fence"
-            onChange={(e) => setRailFenceCipher(e.target.value)}
+            onChange={(e) => {
+              setRailFenceCipher(e.target.value);
+              setRailFenceFile("");
+            }}
             value={railFenceCipher}
           />
           <Input type="file" onChange={onFileChange2} />
@@ -185,7 +196,10 @@ export default function CryptoSameKey(props) {
           <Input
             style={{ width: "100%" }}
             placeholder="Combination"
-            onChange={(e) => setCombCipher(e.target.value)}
+            onChange={(e) => {
+              setCombCipher(e.target.value);
+              setCombFile("");
+            }}
             value={combCipher}
           />
           <Input type="file" onChange={onFileChange3} />

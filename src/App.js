@@ -33,17 +33,17 @@ function App() {
       <Header></Header>
       <div className={classes.root}>
         <Grid className={classes.appBody} container spacing={3}>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <Paper className={classes.paper}>
               <CryptoEachMethod />
             </Paper>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <Paper className={classes.paper}>
               <CryptoSameKey />
             </Paper>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <Paper className={classes.paper}>
               <CryptoSameMethod />
             </Paper>

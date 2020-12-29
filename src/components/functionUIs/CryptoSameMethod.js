@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DecryptSameMethod from "../../algorithms/DecryptSameMethod";
+import { saveAs, encodeBase64 } from "@progress/kendo-file-saver";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -84,7 +85,48 @@ export default function CryptoSameKey(props) {
       const result = DecryptSameMethod(method, ciphers);
       setOutputs(result);
       setCiphers([]);
+
+      if (result[0].plainText.length >= 100) {
+        try {
+          const outputFile = result.map(
+            (output) =>
+              "key: " +
+              output.keys +
+              "\n" +
+              "plaintext: " +
+              output.plainText +
+              "\n"
+          );
+          const dataURI =
+            "data:text/plain;base64," + encodeBase64(outputFile.join("\n"));
+          saveAs(dataURI, "undefined.txt");
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
+  };
+
+  const handleFileChange = (e) => {
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      const cipher = e.target.result;
+
+      if (cipher) {
+        setCiphers((prevArr) => {
+          return [...prevArr, cipher];
+        });
+        setCipher("");
+      }
+
+      console.log("text in file: " + cipher);
+    };
+    if (e.target.files[0]) {
+      reader.readAsText(e.target.files[0]);
+    }
+
+    // e.target.value = null; Xoa file
   };
 
   return (
@@ -104,7 +146,7 @@ export default function CryptoSameKey(props) {
             onChange={(e) => setCipher(e.target.value)}
           />
 
-          <Input type="file" />
+          <Input type="file" onChange={handleFileChange} />
         </div>
         <div>
           <Button

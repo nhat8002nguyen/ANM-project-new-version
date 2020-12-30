@@ -86,8 +86,12 @@ export default function CryptoSameKey(props) {
       setOutputs(result);
       setCiphers([]);
 
-      if (result[0].plainText.length >= 100) {
-        try {
+      if (result.length < 1) {
+        alert("Not exist output!");
+      }
+
+      try {
+        if (result[0].plainText.length >= 100) {
           const outputFile = result.map(
             (output) =>
               "key: " +
@@ -100,9 +104,9 @@ export default function CryptoSameKey(props) {
           const dataURI =
             "data:text/plain;base64," + encodeBase64(outputFile.join("\n"));
           saveAs(dataURI, "undefined.txt");
-        } catch (error) {
-          console.log(error);
         }
+      } catch (error) {
+        console.log(error);
       }
     }
   };

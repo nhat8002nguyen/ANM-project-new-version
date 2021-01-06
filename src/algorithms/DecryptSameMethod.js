@@ -6,6 +6,8 @@ export default function DecryptSameMethod(cryptoMethod, cipherTexts) {
   if (cipherTexts.length <= 1) return null;
   var plainTexts = [];
   var possibleOutcomes = [];
+  let dictionary = [" the ", "the ", " a ", " be ", " have ", " will ", " with ", " get ", " go "];
+
   if (cryptoMethod === "Caesar Cipher") {
     for (var i = 0; i < cipherTexts.length; i++) {
       plainTexts[i] = [];
@@ -29,7 +31,26 @@ export default function DecryptSameMethod(cryptoMethod, cipherTexts) {
     }
   }
   DecryptSameMethodRecursive(plainTexts, possibleOutcomes, []);
-  return possibleOutcomes;
+
+  let result;
+  possibleOutcomes.forEach((outcome) => {
+    const text = outcome.plainText;
+    console.log("hello");
+
+    dictionary.forEach((el) => {
+      if (text.search(el) > -1) {
+        result = [outcome];
+      }
+    });
+  });
+
+  if (result) {
+    return result;
+		console.log(result);
+  } else {
+    console.log("123456");
+    return possibleOutcomes;
+  }
 }
 
 function DecryptSameMethodRecursive(plainTexts, possibleOutcomes, currentKeys) {
